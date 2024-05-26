@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Wizard</title>
+    <style>
+        #videoElement,
+        #canvasElement {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <video id="videoElement" autoplay></video>
+    <canvas id="canvasElement" style="background-color: blue;"></canvas>
+    <script>
+        const video = document.getElementById('videoElement');
+        const canvas = document.getElementById('canvasElement');
+        const context = canvas.getContext('2d');
+        const serverUrl = 'http://127.0.0.1:5000/process_frame';
+
+        async function sendFrameToServer(base64Image) {
+            try {
+                const response = await fetch(serverUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ frame: base64Image })
+                });
+                const result = await response.json();
+                return result.color_image;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function startVideoStream() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                })
+                .catch(error => {
+                    console.error('Error accessing camera:', error);
+                });
+        }
+
+        async function processVideoFrame() {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/jpeg');
+            const base64Image = imageData.split(',')[1];
+
+            const processed_image = await sendFrameToServer(base64Image);
+            if (processed_image) {
+                const coloredImage = new Image();
+                coloredImage.src = 'data:image/jpeg;base64,' + processed_image;
+                coloredImage.onload = () => {
+                    context.drawImage(coloredImage, 0, 0, canvas.width, canvas.height);
+                };
+            }
+
+            requestAnimationFrame(processVideoFrame);
+        }
+
+        video.addEventListener('play', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            requestAnimationFrame(processVideoFrame);
+        });
+
+        startVideoStream();
+    </script>
+</body>
+
+</html>
