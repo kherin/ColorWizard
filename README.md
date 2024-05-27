@@ -32,7 +32,7 @@ Run the ColorWizard server:
 
 Open your web browser and navigate to the provided URL (e.g., http://localhost:5000).
 
-_Process_video.py_
+_Process_video.py_ 📄
 
 The process_video.py file contains the core functionality for processing the coloring book pages. It imports the necessary libraries and defines functions to perform the following tasks:
 
@@ -41,7 +41,7 @@ Region Segmentation: This function uses computer vision algorithms to segment th
 
 The process_video.py file is imported and utilized by the server application (server.py) to handle the image processing and coloring tasks.
 
-_video_capture.html_
+_video_capture.html_ 📄
 
 The video_capture.html file is an HTML template that provides the user interface for the ColorWizard web application.
 

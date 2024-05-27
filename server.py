@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import numpy as np
 import cv2
@@ -8,6 +8,11 @@ from process_video import color_image
 app = Flask(__name__)
 app.debug = True
 CORS(app)
+
+
+@app.route('/')
+def index():
+    return render_template('video_capture.html')
 
 
 @app.route('/process_frame', methods=['POST'])
