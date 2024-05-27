@@ -33,21 +33,11 @@ def color_image(image):
         contours, _ = cv2.findContours(
             edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-        # Create an empty image for contours
-        contour_image = np.zeros_like(image)
-
-        # Draw contours
-        cv2.drawContours(contour_image, contours, -1, (255, 255, 255), 1)
-
-        # Convert the contour image to color
-        color_image = np.zeros(
-            (contour_image.shape[0], contour_image.shape[1], 3), dtype=np.uint8)
-
         # Fill each contour with a random color
         for contour in contours:
             color = np.random.randint(0, 255, size=(3,)).tolist()
-            cv2.drawContours(color_image, [contour], -1, color, -1)
-        return color_image
+            cv2.drawContours(image, [contour], -1, color, -1)
+        return image
     except Exception as e:
         print(f"Error: {e}")
         return image
