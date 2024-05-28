@@ -3,7 +3,7 @@ from flask_cors import CORS
 import numpy as np
 import cv2
 import base64
-from process_video import color_image
+from utils.process_video import color_image
 
 app = Flask(__name__)
 app.debug = True
