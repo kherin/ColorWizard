@@ -2,6 +2,8 @@
 
 > ⚠️ IMPORTANT: The current project is in development and experimental.
 
+![Colorwizard Cover Image](media/cover.PNG)
+
 ColorWizard is a Python-based project that aims to automate the coloring process of physical coloring books. It uses computer vision techniques to scan and detect the regions in a coloring book page, and then automatically applies colors to those regions, creating a digitally colored version of the page.
 
 ## Features
